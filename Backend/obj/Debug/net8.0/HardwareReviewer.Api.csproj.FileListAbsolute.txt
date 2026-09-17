@@ -24,3 +24,10 @@ C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Deb
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.genruntimeconfig.cache
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\ref\HardwareReviewer.Api.dll
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.sourcelink.json
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.csproj.AssemblyReference.cache
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\Hardware.AAD6330E.Up2Date
