@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "n8qtirijmdEBAnYf4HWQqbC8Xy84FHYmLqIHaovpETU=",
+  "Source": "HardwareReviewer.Api",
+  "BasePath": "_content/HardwareReviewer.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
