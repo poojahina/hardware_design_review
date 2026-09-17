@@ -81,7 +81,7 @@ public class AzureOpenAIService
         var base64Image = Convert.ToBase64String(memoryStream.ToArray());
         var mediaType = string.IsNullOrWhiteSpace(image.ContentType) ? "image/png" : image.ContentType;
         var imageUrl = $"data:{mediaType};base64,{base64Image}";
-        var requestUri = $"{endpoint.TrimEnd('/')}/openai/deployments/{deploymentName}/chat/completions?api-version=2024-02-15-preview";
+        var requestUri = BuildResponsesRequestUri(endpoint);
 
         var rulesText = await LoadRulesTextAsync();
         var prompt = """
@@ -127,13 +127,9 @@ public class AzureOpenAIService
 
         var payload = new
         {
-            messages = new object[]
+            model = deploymentName,
+            input = new object[]
             {
-                new
-                {
-                    role = "system",
-                    content = "You are a senior hardware design review engineer. You inspect circuit schematics and return strict JSON only."
-                },
                 new
                 {
                     role = "user",
@@ -141,20 +137,22 @@ public class AzureOpenAIService
                     {
                         new
                         {
-                            type = "text",
-                            text = $"{prompt}\n\nPlain-text hardware review rules:\n{rulesText}\n\nReference datasheet constraints:\n{JsonSerializer.Serialize(referenceDesign.Datasheets)}"
+                            type = "input_text",
+                            text = $"You are a senior hardware design review engineer. You inspect circuit schematics and return strict JSON only.\n\n{prompt}\n\nPlain-text hardware review rules:\n{rulesText}\n\nReference datasheet constraints:\n{JsonSerializer.Serialize(referenceDesign.Datasheets)}"
                         },
                         new
                         {
-                            type = "image_url",
-                            image_url = new { url = imageUrl }
+                            type = "input_image",
+                            image_url = imageUrl,
+                            detail = "high"
                         }
                     }
                 }
-            },
-            temperature = 0.1,
-            response_format = new { type = "json_object" }
+            }
         };
+
+        Console.WriteLine($"Azure OpenAI endpoint: {requestUri}");
+        Console.WriteLine($"Azure OpenAI deployment/model: {deploymentName}");
 
         using var request = new HttpRequestMessage(HttpMethod.Post, requestUri);
         request.Headers.Add("api-key", apiKey);
@@ -162,16 +160,23 @@ public class AzureOpenAIService
         request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
         using var response = await _httpClient.SendAsync(request);
-        response.EnsureSuccessStatusCode();
+        var responseBody = await response.Content.ReadAsStringAsync();
 
-        using var stream = await response.Content.ReadAsStreamAsync();
-        using var document = await JsonDocument.ParseAsync(stream);
+        Console.WriteLine($"Azure OpenAI HTTP status: {(int)response.StatusCode} {response.StatusCode}");
 
-        var content = document.RootElement
-            .GetProperty("choices")[0]
-            .GetProperty("message")
-            .GetProperty("content")
-            .GetString();
+        if (!response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Azure OpenAI Error:");
+            Console.WriteLine(responseBody);
+
+            throw new Exception(
+                $"Azure OpenAI failed: {(int)response.StatusCode} " +
+                $"{response.StatusCode}. Details: {responseBody}");
+        }
+
+        using var document = JsonDocument.Parse(responseBody);
+
+        var content = ExtractResponsesOutputText(document.RootElement);
 
         var result = JsonSerializer.Deserialize<ReviewResult>(
             content ?? "{}",
@@ -190,5 +195,53 @@ public class AzureOpenAIService
         }
 
         return await File.ReadAllTextAsync(rulesPath);
+    }
+
+    private static string BuildResponsesRequestUri(string endpoint)
+    {
+        var baseEndpoint = endpoint.TrimEnd('/');
+        var openAiPathIndex = baseEndpoint.IndexOf("/openai/", StringComparison.OrdinalIgnoreCase);
+
+        if (openAiPathIndex >= 0)
+        {
+            baseEndpoint = baseEndpoint[..openAiPathIndex];
+        }
+
+        return $"{baseEndpoint}/openai/v1/responses";
+    }
+
+    private static string ExtractResponsesOutputText(JsonElement root)
+    {
+        if (root.TryGetProperty("output_text", out var outputText) &&
+            outputText.ValueKind == JsonValueKind.String)
+        {
+            return outputText.GetString() ?? "{}";
+        }
+
+        if (!root.TryGetProperty("output", out var output) ||
+            output.ValueKind != JsonValueKind.Array)
+        {
+            throw new InvalidOperationException("Azure OpenAI response did not contain an output array.");
+        }
+
+        foreach (var outputItem in output.EnumerateArray())
+        {
+            if (!outputItem.TryGetProperty("content", out var content) ||
+                content.ValueKind != JsonValueKind.Array)
+            {
+                continue;
+            }
+
+            foreach (var contentItem in content.EnumerateArray())
+            {
+                if (contentItem.TryGetProperty("text", out var text) &&
+                    text.ValueKind == JsonValueKind.String)
+                {
+                    return text.GetString() ?? "{}";
+                }
+            }
+        }
+
+        throw new InvalidOperationException("Azure OpenAI response did not contain generated text.");
     }
 }
