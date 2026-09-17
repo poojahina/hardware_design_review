@@ -1,0 +1,38 @@
+Hardware Design Review Rules
+
+PWR001 - Voltage domain compatibility
+Check every IC power pin against the component's intended operating voltage.
+If a 3.3V microcontroller or IC is directly connected to a 5V rail, report a CRITICAL issue.
+Evidence should mention the visible power rail label and the affected IC pin.
+
+DEC001 - Local decoupling
+Every IC power pin should have a local decoupling capacitor from VCC or supply rail to GND.
+If a decoupling capacitor is visibly present near the IC supply pin, do not report this issue.
+If the image is unclear, report MEDIUM severity and say the evidence is uncertain.
+
+VAL001 - Approved component values
+Compare visible component values against approved or expected values when the schematic or notes provide them.
+If a resistor, capacitor, or other part value does not match the expected value, report a MEDIUM issue.
+
+POL001 - Polarity-sensitive components
+Check polarity for diodes, electrolytic capacitors, regulators, and transistor terminals.
+If a polarity-sensitive part appears reversed or suspicious, report HIGH severity.
+
+REL001 - Relay flyback protection
+A relay coil driven by a transistor should have a flyback diode or equivalent clamp across the relay coil.
+If no flyback diode or clamp is visible across the relay coil, report a HIGH issue.
+
+GND001 - Ground continuity
+Power regulators, IC ground pins, transistor emitters, and input connector ground pins should connect to the ground net.
+If a required ground connection is missing or visibly floating, report HIGH severity.
+
+PIN001 - Pin/function consistency
+Check whether visible pin labels match the intended function.
+For example, a control GPIO should drive the transistor base/gate through a current-limiting resistor.
+If a pin connection appears inconsistent with the visible function, report MEDIUM or HIGH severity depending on risk.
+
+Output rules:
+Use only evidence visible in the uploaded schematic image.
+Do not invent hidden nets, hidden datasheets, or unseen components.
+Return JSON only.
+Each finding must include component, title, issue, severity, expected, detected, evidence, rule, reason, recommendation, and traceability.

@@ -104,3 +104,20 @@ export async function runReview(): Promise<ReviewResult> {
     return mockReviewResult;
   }
 }
+
+export async function runImageReview(image: File): Promise<ReviewResult> {
+  const formData = new FormData();
+  formData.append('image', image);
+
+  const response = await fetch(`${apiBase}/api/review/analyze-image`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(message || 'Unable to analyze uploaded schematic image.');
+  }
+
+  return response.json();
+}

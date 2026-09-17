@@ -31,3 +31,4 @@ C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\bin\Deb
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.csproj.AssemblyReference.cache
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\Hardware.AAD6330E.Up2Date
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\bin\Debug\net8.0\Rules\hardware-review-rules.txt

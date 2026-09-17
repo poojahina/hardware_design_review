@@ -4,7 +4,7 @@ import { HardwareDesign } from './api';
 
 type Props = {
   design: HardwareDesign | null;
-  onRun: () => void;
+  onRun: (schematicImage: File | null) => void;
 };
 
 const uploadSlots = [
@@ -15,10 +15,15 @@ const uploadSlots = [
 
 export default function UploadPage({ design, onRun }: Props) {
   const [files, setFiles] = useState<Record<string, string>>({});
+  const [schematicImage, setSchematicImage] = useState<File | null>(null);
 
   function handleFile(label: string, event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     setFiles((current) => ({ ...current, [label]: file?.name ?? '' }));
+
+    if (label === 'Circuit Schematic') {
+      setSchematicImage(file ?? null);
+    }
   }
 
   return (
@@ -27,7 +32,7 @@ export default function UploadPage({ design, onRun }: Props) {
         <p className="text-sm font-semibold uppercase tracking-wide text-cyan-300">AI-assisted circuit compliance and engineering review</p>
         <h2 className="mt-4 text-4xl font-semibold leading-tight text-white md:text-6xl">Agentic Hardware Design Reviewer</h2>
         <p className="mt-5 max-w-2xl text-lg text-slate-300">
-          Upload engineering artifacts to demonstrate the workflow. The POC uses hardcoded mock schematic, netlist, datasheet, and rules data for analysis.
+          Upload a circuit schematic image to review it against hardware rules using Azure OpenAI vision analysis.
         </p>
         <div className="mt-8 grid grid-cols-2 gap-3 text-sm text-slate-300 md:grid-cols-4">
           <Metric label="Components" value={design?.components.length ?? 9} />
@@ -54,7 +59,7 @@ export default function UploadPage({ design, onRun }: Props) {
           })}
         </div>
 
-        <button className="mt-5 flex w-full items-center justify-center gap-2 bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300" onClick={onRun}>
+        <button className="mt-5 flex w-full items-center justify-center gap-2 bg-cyan-400 px-4 py-3 font-semibold text-slate-950 transition hover:bg-cyan-300" onClick={() => onRun(schematicImage)}>
           <Play size={18} />
           RUN AGENTIC REVIEW
         </button>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Activity, Cpu, FileText, ShieldCheck, UploadCloud, Zap } from 'lucide-react';
-import { getDesign, HardwareDesign, ReviewResult, runReview } from './api';
+import { getDesign, HardwareDesign, ReviewResult, runImageReview, runReview } from './api';
 import UploadPage from './UploadPage';
 import ReviewPage from './ReviewPage';
 
@@ -24,7 +24,7 @@ export default function App() {
     getDesign().then(setDesign).catch((err: Error) => setError(err.message));
   }, []);
 
-  async function handleRun() {
+  async function handleRun(schematicImage: File | null = null) {
     setError(null);
     setReview(null);
     setRunState('running');
@@ -36,7 +36,7 @@ export default function App() {
     }
 
     try {
-      const result = await runReview();
+      const result = schematicImage ? await runImageReview(schematicImage) : await runReview();
       setReview(result);
       setRunState('complete');
     } catch (err) {
