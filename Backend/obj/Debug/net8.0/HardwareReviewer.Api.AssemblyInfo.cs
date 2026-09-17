@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HardwareReviewer.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+79a09669c052adba028b0d40d10841693db0dedd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9578228b2768c3b72557033cf8c208d4579fedf6")]
 [assembly: System.Reflection.AssemblyProductAttribute("HardwareReviewer.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HardwareReviewer.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
