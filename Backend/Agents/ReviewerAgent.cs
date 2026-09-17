@@ -36,8 +36,8 @@ public class ReviewerAgent
             "Several hardware design issues require review.",
             new DesignMetrics(
                 design.Components.Count,
-                11,
-                3,
+                design.Netlist.Count,
+                design.Datasheets.Count,
                 supportedFindings.Count,
                 critical,
                 high,

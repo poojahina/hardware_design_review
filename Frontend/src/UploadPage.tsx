@@ -31,8 +31,8 @@ export default function UploadPage({ design, onRun }: Props) {
         </p>
         <div className="mt-8 grid grid-cols-2 gap-3 text-sm text-slate-300 md:grid-cols-4">
           <Metric label="Components" value={design?.components.length ?? 9} />
-          <Metric label="Netlist Links" value={design?.netlist.length ?? 12} />
-          <Metric label="Datasheets" value={3} />
+          <Metric label="Netlist Links" value={design?.netlist.length ?? 16} />
+          <Metric label="Datasheets" value={design?.datasheets.length ?? 4} />
           <Metric label="Rules" value={design?.engineeringRules.length ?? 7} />
         </div>
       </div>

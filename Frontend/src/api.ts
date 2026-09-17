@@ -3,8 +3,8 @@ export type HardwareDesign = {
   purpose: string;
   components: Component[];
   netlist: NetConnection[];
-  datasheets: unknown[];
-  engineeringRules: unknown[];
+  datasheets: Datasheet[];
+  engineeringRules: EngineeringRule[];
 };
 
 export type Component = {
@@ -17,6 +17,24 @@ export type Component = {
 export type NetConnection = {
   from: string;
   to: string;
+};
+
+export type Datasheet = {
+  component: string;
+  constraints: DatasheetConstraint[];
+};
+
+export type DatasheetConstraint = {
+  type: string;
+  min: number | null;
+  max: number | null;
+  required: string | null;
+  approvedValue: string | null;
+};
+
+export type EngineeringRule = {
+  code: string;
+  description: string;
 };
 
 export type TraceStep = {
@@ -57,22 +75,32 @@ export type ReviewResult = {
 const apiBase = import.meta.env.VITE_API_BASE_URL ?? '';
 
 export async function getDesign(): Promise<HardwareDesign> {
-  const response = await fetch(`${apiBase}/api/review/design`);
-  if (!response.ok) {
-    throw new Error('Unable to load mock design.');
-  }
+  try {
+    const response = await fetch(`${apiBase}/api/review/design`);
+    if (!response.ok) {
+      throw new Error('Unable to load mock design.');
+    }
 
-  return response.json();
+    return response.json();
+  } catch {
+    const { mockDesign } = await import('./mockData');
+    return mockDesign;
+  }
 }
 
 export async function runReview(): Promise<ReviewResult> {
-  const response = await fetch(`${apiBase}/api/review/analyze`, {
-    method: 'POST',
-  });
+  try {
+    const response = await fetch(`${apiBase}/api/review/analyze`, {
+      method: 'POST',
+    });
 
-  if (!response.ok) {
-    throw new Error('Unable to run hardware review.');
+    if (!response.ok) {
+      throw new Error('Unable to run hardware review.');
+    }
+
+    return response.json();
+  } catch {
+    const { mockReviewResult } = await import('./mockData');
+    return mockReviewResult;
   }
-
-  return response.json();
 }

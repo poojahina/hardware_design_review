@@ -23,3 +23,4 @@ C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Deb
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.pdb
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.genruntimeconfig.cache
 C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\ref\HardwareReviewer.Api.dll
+C:\Users\Ashutosh\Desktop\Agentic_AI_Prep\hardware_design_review\Backend\obj\Debug\net8.0\HardwareReviewer.Api.sourcelink.json
